@@ -29,18 +29,12 @@ void setup() {
   // Uncomment the line below to set a custom delay between sensor readings (in milliseconds).
   dht11.setDelay(1000); // Set this to the desired delay. Default is 500ms.
 
-
-
   // Config do LCD
   pinMode(backLight, OUTPUT);
   digitalWrite(backLight, HIGH); // Liga backlight. Substituir 'HIGH' por 'LOW' para desligar a luz de fundo.
   lcd.begin(16, 2);//Colunas, linhas. Use 16,2 para display LCD 16x2
   lcd.clear();
-
-  lcd.setCursor(0, 0); //Posiciona o cursor na coluna 0, linha 0 (primeira  linha)
-  lcd.print("Temp / Humidade"); //Escreve o texto desejado
-
-  lcd.setCursor(0, 1); //Posiciona o cursor para a coluna 0, linha 1  (segunda linha)
+  lcd.display();
 }
 
 void loop() {
@@ -54,23 +48,24 @@ void loop() {
   // If the reading is successful, print the temperature and humidity values.
   // If there are errors, print the appropriate error messages.
   if (result == 0) {
-    Serial.print("Temperature: ");
-    Serial.print(temperature);
-    Serial.print(" °C\tHumidity: ");
-    Serial.print(humidity);
-    Serial.println(" %");
+    // Serial.print("Temperature: ");
+    // Serial.print(temperature);
+    // Serial.print(" °C\tHumidity: ");
+    // Serial.print(humidity);
+    // Serial.println(" %");
     
+    lcd.clear();
+    lcd.setCursor(0, 0); //Posiciona o cursor na coluna 0, linha 0 (primeira  linha)
+    lcd.print("Temp | Humidade"); //Escreve o texto desejado
+    
+    lcd.setCursor(0, 1);  //Posiciona o cursor para a coluna 0, linha 1  (segunda linha)
     lcd.print(temperature);
-    lcd.print(" °C / ");
+    lcd.print(" C | ");
     lcd.print(humidity);
     lcd.print(" %");
+
   } else {
     // Print error message based on the error code.
     Serial.println(DHT11::getErrorString(result));
   }
-
-  delay(1000);
-  lcd.noDisplay();// Desliga Display:
-  delay(500);
-  lcd.display();// Liga Display:
 }
